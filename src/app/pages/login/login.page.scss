@@ -1,0 +1,46 @@
+ion-toolbar {
+  text-align: center;
+  --background: var(--ion-color-content-dark) !important;
+  color: var(--ion-color-light);
+}
+
+ion-content {
+  --background: var(--ion-color-content-dark);
+}
+
+ion-list {
+  background-color: var(--ion-color-content-dark);
+}
+
+ion-item {
+  --background: var(--ion-color-content-dark);
+  width: 95%;
+  margin: 20px auto;
+}
+
+ion-button {
+  width: 95%;
+  margin: 20px 0 10px;
+}
+
+ion-input {
+  --padding-start: 20px !important;
+  --color: var(--ion-color-light);
+}
+
+.login-logo {
+  width: 80%;
+  margin: 50px auto 50px;
+  display: block;
+}
+
+.login {
+  text-align: center;
+  color: var(--ion-color-medium);
+}
+
+.forgot-pwd {
+  p {
+    display: inline-block;
+  }
+}

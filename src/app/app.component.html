@@ -1,24 +1,66 @@
 <ion-app>
   <ion-split-pane>
-    <ion-menu>
+    <ion-menu type="overlay">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu</ion-title>
+          <img src="../assets/img/adminlabs-logo-white.svg" class="sidebar-logo" alt="Logo">
         </ion-toolbar>
       </ion-header>
+
       <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+        <ion-list lines="none">
+          <div *ngIf="loadingError">
+            <ion-item class="user-details">
+              <ion-label slot="start">
+                <h2>Loading error</h2>
+                <p>Try to refresh..</p>
+              </ion-label>
+              <ion-label slot="end">
+                <ion-buttons>
+                  <ion-button (click)="loadContent()">
+                    <ion-icon name="refresh" color="light"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-label>
+            </ion-item>
+          </div>
+
+          <div *ngIf="!isLoggedIn && !loadingError" class="user-loading">
+            <ion-item class="user-details">
+              <ion-spinner color="light"></ion-spinner>
+            </ion-item>
+          </div>
+
+          <div *ngIf="isLoggedIn && !loadingError">
+            <ion-item class="user-details">
+              <ion-avatar slot="start">
+                <ngx-avatar name="{{ userDetails.name }}" size="40"></ngx-avatar>
+              </ion-avatar>
               <ion-label>
-                {{p.title}}
+                <h2>{{ userDetails.name }}</h2>
+                <p>{{ userDetails.email }}</p>
+              </ion-label>
+            </ion-item>
+          </div>
+          <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages">
+            <ion-item [routerDirection]="'root'" [routerLink]="[page.url]" [class.active-page]="checkActive(page.id)" (click)="setActive(page.id)">
+              <ion-icon slot="start" [name]="page.icon" color="light"></ion-icon>
+              <ion-label>
+                {{ page.title }}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+
+          <ion-item (click)="authService.logoutConfirm()" button="true" detail="true">
+            <ion-icon slot="start" name="log-out" color="light"></ion-icon>
+            <ion-label>
+              Log out
+            </ion-label>
+          </ion-item>
         </ion-list>
       </ion-content>
+
     </ion-menu>
-    <ion-router-outlet main></ion-router-outlet>
+    <ion-router-outlet main [swipeGesture]="false"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>

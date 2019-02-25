@@ -1,0 +1,34 @@
+<ion-content padding [scrollY]="false">
+    <div class="login">
+      <img src="../../../assets/img/adminlabs-logo-white.svg" class="login-logo" alt="Logo">
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <ion-list>
+          <div class="form-group">
+            <ion-item>
+              <ion-icon name="mail" color="medium"></ion-icon>
+              <ion-input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Email"></ion-input>
+            </ion-item>
+          </div>
+          <div class="form-group">
+            <ion-item>
+              <ion-icon name="lock" color="medium" size="500"></ion-icon>
+              <ion-input type="password" class="form-control" id="pwd" [(ngModel)]="pwd" name="pwd" placeholder="Password"></ion-input>
+            </ion-item>
+          </div>
+          <div class="form-group">
+            <ion-button type="submit">
+              <div *ngIf="!loginLoading">
+                <p>Log in</p>
+              </div>
+              <div *ngIf="loginLoading">
+                <ion-spinner></ion-spinner>
+              </div>
+            </ion-button>
+          </div>
+        </ion-list>
+        <div class="forgot-pwd">
+          <p (click)="forgotPwd($event)">Forgot password?</p>
+        </div>
+      </form>
+    </div>
+</ion-content>

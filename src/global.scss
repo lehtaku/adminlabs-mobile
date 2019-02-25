@@ -9,3 +9,94 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+ion-toolbar {
+  --background: var(--ion-color-toolbar);
+}
+
+ion-title {
+  --color: var(--ion-color-light);
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+ion-menu-button {
+  --color: var(--ion-color-light);
+}
+
+ion-content {
+  --background: var(--ion-color-content-creme);
+}
+
+.loading-error {
+  background-color: var(--ion-color-content-dark);
+  color: var(--ion-color-light);
+  min-width: 100%;
+  min-height: 100%;
+  text-align: center;
+  display: flex !important;
+  align-content: center !important;
+  align-items: center !important;
+  img {
+    margin-bottom: 20px;
+  }
+}
+
+.loading-error-content {
+  width: 75%;
+  margin: auto;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ion-color-content-creme);
+}
+
+.dot-success {
+  margin-left: 10px;
+  margin-top: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: var(--ion-color-success);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-warning {
+  margin-left: 10px;
+  margin-top: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: var(--ion-color-warning);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-danger {
+  margin-left: 10px;
+  margin-top: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: var(--ion-color-danger);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-paused {
+  margin-left: 10px;
+  margin-top: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: var(--ion-color-light-shade);
+  border-radius: 50%;
+  display: inline-block;
+}

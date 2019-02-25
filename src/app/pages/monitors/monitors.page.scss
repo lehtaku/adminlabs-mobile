@@ -1,0 +1,20 @@
+ion-list {
+  --background: var(--ion-color-content-light);
+  border: 1px solid var(--ion-color-border);
+  padding: 0;
+}
+
+ion-item {
+  --background: var(--ion-color-content-light);
+  --color: var(--ion-color-dark);
+  --border-color: var(--ion-color-border);
+  --detail-icon-color: var(--ion-color-dark);
+}
+
+ion-spinner {
+  display: block;
+  margin: auto;
+}
+
+
+

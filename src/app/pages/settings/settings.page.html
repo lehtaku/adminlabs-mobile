@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="true"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Settings
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadContent()">
+        <ion-icon name="refresh" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!isContentLoaded && loadingError" class="loading-error">
+      <div padding class="loading-error-content">
+        <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
+        <h2>No data available!</h2>
+        <p>Lean back and relax. We're cooking up some data at the moment and will get back to you shortly.</p>
+      </div>
+    </div>
+
+    <div *ngIf="!isContentLoaded && !loadingError" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="isContentLoaded && !loadingError">
+      <ion-list lines="full">
+        <ion-item-divider>Notification configuration</ion-item-divider>
+        <ion-item>
+          <ion-label>UP/DOWN notifications</ion-label>
+          <ion-toggle color="success" [(ngModel)]="user.notifications.outages" (ngModelChange)="settingsChanged()"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>DOWN reminders</ion-label>
+          <ion-toggle color="success" [(ngModel)]="user.notifications.outageReminders" (ngModelChange)="settingsChanged()"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+</ion-content>

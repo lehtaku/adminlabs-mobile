@@ -1,0 +1,50 @@
+ion-list {
+  --background: var(--ion-color-content-light);
+  width: 100%;
+  border: 1px solid var(--ion-color-border);
+  padding: 0;
+}
+
+ion-item {
+  --background: var(--ion-color-content-light);
+  --color: var(--ion-color-dark);
+  --border-color: var(--ion-color-border);
+  --detail-icon-color: var(--ion-color-dark);
+}
+
+.chart-item {
+  --background: var(--ion-color-white);
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
+}
+
+.chart-description {
+  --background: var(--ion-color-content-dark);
+  --color: var(--ion-color-light);
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.monitor-chart {
+  width: 100%;
+  height: 400px;
+}
+
+.history-empty {
+  background-color: var(--ion-color-content-light);
+  color: var(--ion-color-dark);
+  min-width: 100%;
+  min-height: 100%;
+  text-align: center;
+  display: flex !important;
+  align-content: center !important;
+  align-items: center !important;
+}
+
+.history-empty-content {
+  width: 75%;
+  margin: auto;
+}
+

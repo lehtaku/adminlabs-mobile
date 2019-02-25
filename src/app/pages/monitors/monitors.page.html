@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="true"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Website monitoring
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadContent()">
+        <ion-icon name="refresh" color="light"></ion-icon>
+      </ion-button>
+      <ion-button (click)="showGroups($event)">
+        <ion-icon name="options" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!isContentLoaded && loadingError" class="loading-error">
+      <div padding class="loading-error-content">
+        <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
+        <h2>No data available!</h2>
+        <p>Lean back and relax. We're cooking up some data at the moment and will get back to you shortly.</p>
+      </div>
+    </div>
+
+    <div *ngIf="isContentLoaded && !loadingError && emptyRes" class="loading-error">
+      <div padding class="loading-error-content">
+        <img src="../../assets/img/adminlabs-data-not-found-003.svg" alt="Data not found">
+        <h2>This group is empty!</h2>
+        <p>Try to select some other group or add monitors to this group.</p>
+      </div>
+    </div>
+
+    <div *ngIf="!isContentLoaded && !loadingError" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="isContentLoaded && !loadingError && !emptyRes">
+      <ion-list lines="full">
+        <div *ngFor="let monitor of monitors">
+          <ion-item (click)="navToMonitor(monitor.id)" detail="true">
+            <ion-avatar slot="start">
+              <div>
+                <span [className]="checkMonitorState(monitor)"></span>
+              </div>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ monitor.name }}</h2>
+              <h4>{{ monitor.address }}</h4>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+</ion-content>

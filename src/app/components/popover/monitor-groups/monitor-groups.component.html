@@ -1,0 +1,22 @@
+<ion-content no-padding>
+    <ion-list no-margin>
+      <ion-radio-group [(ngModel)]="groupSelection" (ngModelChange)="groupChanged($event)">
+        <ion-list-header>
+          Filter by group
+        </ion-list-header>
+
+        <ion-item lines="full">
+          <ion-label>All monitors</ion-label>
+          <ion-radio value=""></ion-radio>
+        </ion-item>
+
+        <div *ngFor="let monitorGroup of monitorGroups">
+          <ion-item lines="none">
+            <ion-label>{{ monitorGroup.name }}</ion-label>
+            <ion-radio value="{{ monitorGroup.id }}"></ion-radio>
+          </ion-item>
+        </div>
+
+      </ion-radio-group>
+    </ion-list>
+</ion-content>

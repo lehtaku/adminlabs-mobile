@@ -1,0 +1,32 @@
+<ion-list no-margin>
+  <ion-radio-group [(ngModel)]="monitorFilter.periodSelection" (ngModelChange)="periodChanged($event)">
+    <ion-list-header>
+      Filter by
+    </ion-list-header>
+
+    <ion-item lines="none">
+      <ion-label>Last 24 hours</ion-label>
+      <ion-radio value="24h"></ion-radio>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Last 7 days</ion-label>
+      <ion-radio value="7d"></ion-radio>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Last 30 days</ion-label>
+      <ion-radio value="30d"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+  <ion-list-header>
+    Hits
+  </ion-list-header>
+  <ion-item lines="none">
+    <ion-range min="21" max="500" debounce="750" pin="true" color="success" [(ngModel)]="monitorFilter.stepSelection"
+               (ngModelChange)="stepsChanged($event)">
+      <ion-label slot="start">21</ion-label>
+      <ion-label slot="end">500</ion-label>
+    </ion-range>
+  </ion-item>
+</ion-list>
