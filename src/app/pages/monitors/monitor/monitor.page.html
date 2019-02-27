@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content [scrollY]="canScroll">
-    <div *ngIf="loadingError && !isContentLoaded" class="loading-error">
+    <div *ngIf="loadingError && isContentLoaded" class="loading-error">
         <div padding class="loading-error-content">
             <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
             <h2>No data available!</h2>
@@ -56,21 +56,20 @@
                 </ion-item>
             </div>
 
-            <div [hidden]="!isContentLoaded || isHistoryEmpty">
+            <div [hidden]="!isChartRendered || isHistoryEmpty">
                 <ion-item class="chart-item">
                     <div id="monitorChart" class="monitor-chart" (touchstart)="chartClicked($event)" (touchend)="chartNonClicked($event)"></div>
                 </ion-item>
-
             </div>
 
-            <div *ngIf="isHistoryEmpty" class="history-empty">
+            <div *ngIf="isContentLoaded && isHistoryEmpty" class="history-empty">
                 <div padding class="history-empty-content">
                     <h2>Scan history is empty</h2>
                     <p>This could be caused if the monitor is paused or just created.</p>
                 </div>
             </div>
 
-            <div *ngIf="isContentLoaded" [hidden]="isHistoryEmpty">
+            <div *ngIf="isContentLoaded && !isHistoryEmpty">
                 <ion-item>
                     <ion-label>Highest</ion-label>
                     {{ scanHistory.highest }} ms

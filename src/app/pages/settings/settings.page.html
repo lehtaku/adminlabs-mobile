@@ -15,7 +15,7 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf="!isContentLoaded && loadingError" class="loading-error">
+    <div *ngIf="isContentLoaded && loadingError" class="loading-error">
       <div padding class="loading-error-content">
         <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
         <h2>No data available!</h2>

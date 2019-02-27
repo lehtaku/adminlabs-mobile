@@ -36,6 +36,7 @@ export class MonitorPage implements OnInit {
   public isContentLoaded: boolean;
   public isHistoryEmpty: boolean;
   public canScroll: boolean;
+  public isChartRendered: boolean;
   public scrollTimeout: any;
 
   constructor(private router: Router,
@@ -57,16 +58,17 @@ export class MonitorPage implements OnInit {
     if (this.filterPopover !== null && this.filterPopover !== undefined) {
       this.filterPopover.dismiss();
     }
-    if (this.lineChart) {
-      this.lineChart.destroy();
-    }
-    this.loadingError = false;
     this.isContentLoaded = false;
+    this.isChartRendered = false;
+    this.loadingError = false;
     this.updateContent()
         .catch(err => {
           this.loadingError = true;
           this.isContentLoaded = false;
-        }).finally(() => this.isContentLoaded = true);
+        }).finally(() => {
+          this.isContentLoaded = true;
+          setTimeout(() => this.isChartRendered = true, 100);
+    });
   }
 
   async updateContent() {
