@@ -18,6 +18,9 @@ export class MonitorsPage implements OnInit {
 
   // Monitors
   public monitors: Array<MonitorDetails>;
+  public upMonitors: Array<MonitorDetails>;
+  public downMonitors: Array<MonitorDetails>;
+  public pausedMonitors: Array<MonitorDetails>;
   public monitorGroups: Array<MonitorGroups>;
   public groupId: string;
 
@@ -28,6 +31,7 @@ export class MonitorsPage implements OnInit {
   public isContentLoaded: boolean;
   public loadingError: boolean;
   public emptyRes: boolean;
+  public stateSegment: string;
 
   constructor(
       private auth: AuthenticationService,
@@ -39,6 +43,7 @@ export class MonitorsPage implements OnInit {
 
   ngOnInit() {
     this.menuCtrl.enable(true);
+    this.stateSegment = 'all';
     this.monitorsService.groupSelection.subscribe(groupId => {
       this.groupId = groupId;
       this.loadContent();
@@ -70,6 +75,7 @@ export class MonitorsPage implements OnInit {
       } else {
         this.monitors = await this.monitorsService.getMonitorsByGroup(this.groupId);
       }
+      await this.sortMonitorsByState();
   }
 
   navToMonitor(monitorId: string) {
@@ -86,6 +92,29 @@ export class MonitorsPage implements OnInit {
       translucent: true,
     });
     return await this.groupPopover.present();
+  }
+
+  async sortMonitorsByState() {
+    this.upMonitors = [];
+    this.downMonitors = [];
+    this.pausedMonitors = [];
+    for await (const monitor of this.monitors) {
+      if (monitor.state === 'paused') {
+        this.pausedMonitors.push(monitor);
+      } else if (monitor.health === 'ok') {
+        this.upMonitors.push(monitor);
+      } else if (monitor.health === 'down') {
+        this.downMonitors.push(monitor);
+      }
+    }
+  }
+
+  segmentChanged(event: any) {
+    this.stateSegment = event.detail.value;
+  }
+
+  allMonitorsUp() {
+    return !(this.upMonitors.length && !this.downMonitors.length && !this.pausedMonitors.length);
   }
 
   checkMonitorState(monitor: MonitorDetails) {

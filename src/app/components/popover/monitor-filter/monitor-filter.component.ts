@@ -12,8 +12,7 @@ export class MonitorFilterComponent implements OnInit {
 
   public monitorFilter: MonitorFilter;
 
-  constructor(private monitorService: MonitorService,
-              private renderer: Renderer2) {
+  constructor(private monitorService: MonitorService) {
   }
 
   ngOnInit() {
@@ -26,6 +25,10 @@ export class MonitorFilterComponent implements OnInit {
 
   stepsChanged(event: any): void {
     this.setChanges();
+  }
+
+  focusLose(event: any) {
+    console.log(event);
   }
 
   setChanges() {

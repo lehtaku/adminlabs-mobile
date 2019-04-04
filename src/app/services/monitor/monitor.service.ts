@@ -18,7 +18,7 @@ export class MonitorService {
 
   public monitorFiltering: BehaviorSubject<MonitorFilter> = new BehaviorSubject({
     periodSelection: '24h',
-    stepSelection: '24'
+    stepSelection: '250'
   });
   public groupSelection: BehaviorSubject<string> = new BehaviorSubject('');
 

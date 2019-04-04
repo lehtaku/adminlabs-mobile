@@ -28,8 +28,14 @@ export class AppComponent {
     {
       title: 'Website monitoring',
       id: 'monitors',
-      url: '/user/monitors',
-      icon: 'pulse'
+      icon: 'pulse',
+      children: [
+        {
+          title: 'Child menu 1',
+          url: '/user/monitors',
+          icon: 'pulse',
+        }
+      ]
     },
     {
       title: 'Settings',

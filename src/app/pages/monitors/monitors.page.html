@@ -38,21 +38,92 @@
       <ion-spinner></ion-spinner>
     </div>
 
-    <div *ngIf="isContentLoaded && !loadingError && !emptyRes">
+    <div *ngIf="isContentLoaded && !loadingError && !emptyRes" [ngSwitch]="stateSegment">
       <ion-list lines="full">
-        <div *ngFor="let monitor of monitors">
-          <ion-item (click)="navToMonitor(monitor.id)" detail="true">
-            <ion-avatar slot="start">
-              <div>
-                <span [className]="checkMonitorState(monitor)"></span>
-              </div>
-            </ion-avatar>
-            <ion-label>
-              <h2>{{ monitor.name }}</h2>
-              <h4>{{ monitor.address }}</h4>
-            </ion-label>
-          </ion-item>
+
+        <div *ngSwitchCase="'all'">
+          <div *ngFor="let monitor of monitors">
+            <ion-item (click)="navToMonitor(monitor.id)" detail="true">
+              <ion-avatar slot="start">
+                <div>
+                  <span [className]="checkMonitorState(monitor)"></span>
+                </div>
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ monitor.name }}</h2>
+                <h4>{{ monitor.address }}</h4>
+              </ion-label>
+            </ion-item>
+          </div>
         </div>
+
+        <div *ngSwitchCase="'up'">
+          <div *ngFor="let monitor of upMonitors">
+            <ion-item (click)="navToMonitor(monitor.id)" detail="true">
+              <ion-avatar slot="start">
+                <div>
+                  <span [className]="checkMonitorState(monitor)"></span>
+                </div>
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ monitor.name }}</h2>
+                <h4>{{ monitor.address }}</h4>
+              </ion-label>
+            </ion-item>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'down'">
+          <div *ngFor="let monitor of downMonitors">
+            <ion-item (click)="navToMonitor(monitor.id)" detail="true">
+              <ion-avatar slot="start">
+                <div>
+                  <span [className]="checkMonitorState(monitor)"></span>
+                </div>
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ monitor.name }}</h2>
+                <h4>{{ monitor.address }}</h4>
+              </ion-label>
+            </ion-item>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'paused'">
+          <div *ngFor="let monitor of pausedMonitors">
+            <ion-item (click)="navToMonitor(monitor.id)" detail="true">
+              <ion-avatar slot="start">
+                <div>
+                  <span [className]="checkMonitorState(monitor)"></span>
+                </div>
+              </ion-avatar>
+              <ion-label>
+                <h2>{{ monitor.name }}</h2>
+                <h4>{{ monitor.address }}</h4>
+              </ion-label>
+            </ion-item>
+          </div>
+        </div>
+
       </ion-list>
     </div>
 </ion-content>
+
+<ion-footer *ngIf="isContentLoaded && !loadingError && !emptyRes">
+  <ion-toolbar *ngIf="allMonitorsUp()" no-padding>
+      <ion-segment (ionChange)="segmentChanged($event)" [value]="stateSegment">
+        <ion-segment-button value="all">
+          <ion-label>All</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngIf="downMonitors.length || pausedMonitors.length" value="up">
+          <ion-label>Up</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngIf="downMonitors.length" value="down">
+          <ion-label>Down</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngIf="pausedMonitors.length" value="paused">
+          <ion-label>Paused</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -67,7 +67,7 @@ export class MonitorPage implements OnInit {
           this.isContentLoaded = false;
         }).finally(() => {
           this.isContentLoaded = true;
-          setTimeout(() => this.isChartRendered = true, 100);
+          setTimeout(() => this.isChartRendered = true, 50);
     });
   }
 
@@ -147,7 +147,7 @@ export class MonitorPage implements OnInit {
   }
 
   chartClicked(event: any) {
-    this.scrollTimeout = setTimeout(() => this.canScroll = false, 500);
+    this.scrollTimeout = setTimeout(() => this.canScroll = false, 1000);
   }
 
   chartNonClicked(event: any) {
