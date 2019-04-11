@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 
 import { ScanHistory } from '../../interfaces/monitor/scan-history';
@@ -10,6 +9,7 @@ import { MonitorDetails } from '../../interfaces/monitor/monitor-details';
 import { MonitorGroups } from '../../interfaces/monitor/monitor-groups';
 import { MonitorHistory } from '../../interfaces/monitor/monitor-history';
 import { MonitorFilter } from '../../interfaces/monitor/monitor-filter';
+import { Pause } from '../../interfaces/monitor/pause';
 
 @Injectable({
   providedIn: 'root'
@@ -22,65 +22,39 @@ export class MonitorService {
   });
   public groupSelection: BehaviorSubject<string> = new BehaviorSubject('');
 
-  constructor(private http: HttpClient,
-              private userService: UserService) {
-  }
+  constructor(private http: HttpClient) {}
 
-  async getMonitors() {
-    const headers = await this.userService.getUserHeaders();
+  getMonitors(groupId: string): Observable<Array<MonitorDetails>> {
     return this.http.get<Array<MonitorDetails>>(environment.apiBaseUrl + '/monitors', {
-      headers: headers,
-      params: {
-        'sorting': 'health:desc'
-      }
-    }).toPromise();
-  }
-
-  async getMonitorsByGroup(groupId: string) {
-    const headers = await this.userService.getUserHeaders();
-    return this.http.get<Array<MonitorDetails>>(environment.apiBaseUrl + '/monitors', {
-      headers: headers,
       params: {
         'sorting': 'health:desc',
         'groupId': groupId
       }
-    }).toPromise();
+    });
   }
 
-  async getMonitor(monitorId: string) {
-    const headers = await this.userService.getUserHeaders();
-    return this.http.get<MonitorDetails>(environment.apiBaseUrl + '/monitors/' + monitorId, {
-      headers: headers
-    }).toPromise();
+  getMonitor(monitorId: string): Observable<MonitorDetails> {
+    return this.http.get<MonitorDetails>(environment.apiBaseUrl + '/monitors/' + monitorId);
   }
 
-  async getMonitorGroups() {
-    const headers = await this.userService.getUserHeaders();
-    return this.http.get<Array<MonitorGroups>>(environment.apiBaseUrl + '/monitor-groups', {
-      headers: headers
-    }).toPromise();
+  getMonitorGroups(): Observable<Array<MonitorGroups>> {
+    return this.http.get<Array<MonitorGroups>>(environment.apiBaseUrl + '/monitor-groups');
   }
 
-  async getMonitorScanHistory(monitorId: string, period: string, steps: string) {
-    const headers = await this.userService.getUserHeaders();
-    const postData = new HttpParams()
+  getMonitorScanHistory(monitorId: string, period: string, steps: string): Observable<ScanHistory> {
+    const postData = new HttpParams({})
         .append('period', period)
         .append('steps', steps);
     return this.http.get<ScanHistory>(`${ environment.apiBaseUrl }/monitors/${ monitorId }/load-times`, {
-      headers: headers,
       params: postData
-    }).toPromise();
+    });
   }
 
-  async getMonitorHistory(monitorId: string, year: string, month: string) {
-    const headers = await this.userService.getUserHeaders();
-    return this.http.get<MonitorHistory>(`${ environment.apiBaseUrl }/monitors/${ monitorId }/history/${ year }/${ month }`, {
-      headers: headers
-    }).toPromise();
+  getMonitorHistory(monitorId: string, year: string, month: string): Observable<MonitorHistory> {
+    return this.http.get<MonitorHistory>(`${ environment.apiBaseUrl }/monitors/${ monitorId }/history/${ year }/${ month }`);
   }
 
-  async pauseMonitor(monitorId: string, newState: any) {
-    const headers = await this.userService.getUserHeaders();
+  pauseMonitor(monitorId: string, newState: any): Observable<Pause> {
     let postData: object;
     if (newState) {
       postData = {
@@ -91,9 +65,7 @@ export class MonitorService {
         'state': 'paused'
       };
     }
-    return this.http.post(`${environment.apiBaseUrl}/monitors/${monitorId}`, postData, {
-      headers: headers
-    }).toPromise();
+    return this.http.post<Pause>(`${environment.apiBaseUrl}/monitors/${monitorId}`, postData);
   }
 
 }

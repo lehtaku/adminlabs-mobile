@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
-import { AlertController, MenuController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { StorageService } from '../../services/storage/storage.service';
+import { AlertService } from '../../services/alert/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -15,41 +18,39 @@ export class LoginPage implements OnInit {
 
   public email: string;
   public pwd: string;
-  public loginLoading: boolean;
+  public formSubmitted: boolean;
 
   constructor(
       private menuCtrl: MenuController,
+      private storage: StorageService,
       private auth: AuthenticationService,
-      private alertCtrl: AlertController,
+      private alertService: AlertService,
       private router: Router
   ) {}
 
   ngOnInit() {
     this.menuCtrl.enable(false);
-    this.loginLoading = false;
+    this.formSubmitted = false;
   }
 
-  login() {
-    this.loginLoading = true;
-    this.auth.login(this.email, this.pwd)
-        .then(() => this.loginLoading = false)
-        .catch(() => {
-          this.loginLoading = false;
-          this.failedAlert();
-        });
+  login(form: NgForm) {
+    this.formSubmitted = true;
+    this.auth.login(form.value.email, form.value.pwd)
+        .subscribe(() => {
+          this.auth.authState.next(true);
+          this.formSubmitted = false;
+            },
+            err => this.loginFailed());
+  }
+
+  loginFailed() {
+    this.formSubmitted = false;
+    this.auth.authState.next(false);
+    this.alertService.dangerToast('Login failed, please try again!', 3000);
   }
 
   forgotPwd(event: any) {
     this.router.navigate(['/login/forgot']);
-  }
-
-  async failedAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Wrong credentials',
-      message: 'Wrong username and password combination',
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
 }

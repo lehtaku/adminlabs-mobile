@@ -10,6 +10,7 @@ import { UserService } from './services/user/user.service';
 import { StorageService } from './services/storage/storage.service';
 import { User } from './interfaces/user/user';
 import { NavigationService} from './services/navigation/navigation.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,23 +20,15 @@ import { NavigationService} from './services/navigation/navigation.service';
 export class AppComponent {
 
   // User
-  public userDetails: User;
+  public user$: Observable<User>;
 
   // DOM
-  public isLoggedIn: boolean;
-  public loadingError: boolean;
   public appPages = [
     {
       title: 'Website monitoring',
       id: 'monitors',
+      url: '/user/monitors',
       icon: 'pulse',
-      children: [
-        {
-          title: 'Child menu 1',
-          url: '/user/monitors',
-          icon: 'pulse',
-        }
-      ]
     },
     {
       title: 'Settings',
@@ -66,13 +59,17 @@ export class AppComponent {
   }
 
   async initializeApp() {
-    await this.storageService.checkUserStored()
-        .then(() => this.authService.authState.next(true))
-        .catch(() => this.authService.authState.next(false));
+    await this.storageService.getUserFromStorage().subscribe((user) => {
+          if (user == null) {
+            this.authService.authState.next(false);
+          } else {
+            this.authService.authState.next(true);
+          }
+        });
 
     await this.authService.authState.subscribe((isLogged) => {
       if (isLogged) {
-        this.loadContent();
+        this.user$ = this.userService.getLoggedUser();
         this.router.navigate(['/user'], {replaceUrl: true})
             .then(() => this.menuCtrl.enable(true));
       } else {
@@ -80,16 +77,6 @@ export class AppComponent {
             .then(() => this.menuCtrl.enable(false));
       }
     });
-  }
-
-  loadContent() {
-    this.loadingError = false;
-    this.isLoggedIn = false;
-    this.userService.getLoggedUser()
-        .then(userRes => {
-          this.userDetails = userRes;
-          this.isLoggedIn = true;
-        }).catch(() => this.loadingError = true);
   }
 
   setActive(pageId: string) {

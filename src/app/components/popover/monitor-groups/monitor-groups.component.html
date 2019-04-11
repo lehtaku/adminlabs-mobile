@@ -1,6 +1,6 @@
 <ion-content no-padding>
     <ion-list no-margin>
-      <ion-radio-group [(ngModel)]="groupSelection" (ngModelChange)="groupChanged($event)">
+      <ion-radio-group [ngModel]="groupSelection" (ionChange)="groupChanged($event)">
         <ion-list-header>
           Filter by group
         </ion-list-header>

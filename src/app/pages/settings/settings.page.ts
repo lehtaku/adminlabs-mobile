@@ -15,7 +15,7 @@ export class SettingsPage implements OnInit {
   public user: User;
 
   // DOM
-  public isContentLoaded: boolean;
+  public canScroll: boolean;
   public loadingError: boolean;
 
   constructor(
@@ -28,24 +28,25 @@ export class SettingsPage implements OnInit {
   }
 
   loadContent() {
-    this.isContentLoaded = false;
+    // Init variables
+    this.user = null;
     this.loadingError = false;
-    this.updateContent()
-        .catch(err => {
-          this.loadingError = true;
-        }).finally(() => this.isContentLoaded = true);
+    this.canScroll = true;
+
+    // Load user
+    this.userService.getLoggedUser().subscribe(user => this.user = user,
+        err => this.loadingFailed());
   }
 
-  async updateContent() {
-      this.user = await this.userService.getLoggedUser();
+  loadingFailed() {
+    this.loadingError = true;
+    this.canScroll = false;
   }
 
-  async settingsChanged() {
-    try {
-      await this.userService.changeNotificationSettings(this.user.notifications.outages, this.user.notifications.outageReminders);
-    } catch (err) {
-      this.alertService.presentToast('Failed to save settings, please try again!', 2500);
-    }
+  settingsChanged() {
+    this.userService.changeNotificationSettings(this.user.notifications.outages, this.user.notifications.outageReminders)
+        .subscribe(() => this.alertService.successToast('Setting saved successfully!', 2000),
+            err => this.alertService.dangerToast('Failed to save settings, please try again!', 3000));
   }
 
 }

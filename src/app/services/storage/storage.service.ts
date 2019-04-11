@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { fromPromise } from 'rxjs/internal-compatibility';
+
 import { EncryptionService } from '../encryption/encryption.service';
 
 @Injectable({
@@ -11,42 +13,16 @@ export class StorageService {
   constructor(private storage: Storage) {}
 
   getUserFromStorage() {
-    return this.storage.get('al_user');
+      return fromPromise(this.storage.get('al_user'));
   }
 
-  checkUserStored(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.storage.get('al_user')
-          .then(userStored => {
-            if (userStored === null || userStored === undefined) {
-              reject(false);
-            } else {
-              resolve(true);
-            }
-          }).catch(() => {
-        reject(false);
-      });
-    });
+  saveUserToStorage(email: string, pwd: string) {
+      return fromPromise(this.storage.set('al_user', EncryptionService.encryptUserData(email, pwd)));
   }
 
-  saveUserToStorage(email: string, pwd: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.storage.set('al_user', EncryptionService.encryptUserData(email, pwd))
-          .then(() => {
-            resolve(true);
-          })
-          .catch(() => {
-            reject(false);
-          });
-    });
-  }
+  removeUserFromStorage() {
+      return fromPromise(this.storage.remove('al_user'));
 
-  removeUserFromStorage(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.storage.remove('al_user')
-          .then(() => resolve(true))
-          .catch(() => reject(false));
-    });
   }
 
 }

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { AlertController, Platform} from '@ionic/angular';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { UserService } from '../user/user.service';
+import { AlertController } from '@ionic/angular';
+
+import { BehaviorSubject, concat } from 'rxjs';
+
+import { environment } from '../../../environments/environment';
+
 import { StorageService } from '../storage/storage.service';
 import { NavigationService } from '../navigation/navigation.service';
+import { User } from '../../interfaces/user/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,52 +18,51 @@ export class AuthenticationService {
 
   public authState: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private platform: Platform,
-              private userService: UserService,
+  constructor(private alertCtrl: AlertController,
               private storageService: StorageService,
-              public alertCtrl: AlertController,
-              public navService: NavigationService
+              public navService: NavigationService,
+              private http: HttpClient
   ) {}
 
-  login (email: string, pwd: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.userService.getNonLoggedUser(email, pwd)
-          .then(response => {
-              if (response.status === 200) {
-              this.storageService.saveUserToStorage(email, pwd)
-                  .then(() => {
-                      this.authState.next(true);
-                      resolve(true);
-                  });
-              }
-          }).catch(err => reject(false));
-    });
+  login(email: string, pwd: string) {
+      const headers: HttpHeaders = new HttpHeaders({
+          'email': email,
+          'password': pwd
+      });
+      const getUser$ = this.http.get<User>( environment.apiBaseUrl + '/user', {
+        headers: headers
+      });
+      const saveUser$ = this.storageService.saveUserToStorage(email, pwd);
+
+      return concat(getUser$, saveUser$);
   }
 
   logout(): void {
     this.storageService.removeUserFromStorage()
-        .then(() => this.authState.next(false));
-    this.navService.activePage.next('monitors');
+        .subscribe(() => {
+            this.authState.next(false);
+            this.navService.activePage.next('monitors');
+        });
   }
 
-    async logoutConfirm() {
-        const alert = await this.alertCtrl.create({
-            header: 'Log out',
-            message: 'Are you sure that you want to log out?',
-            buttons: [
-                {
-                    text: 'No',
-                    role: 'cancel',
-                    cssClass: 'secondary'
-                }, {
-                    text: 'Yes',
-                    handler: () => {
-                        this.logout();
-                    }
+  async logoutConfirm() {
+    const alert = await this.alertCtrl.create({
+        header: 'Log out',
+        message: 'Are you sure that you want to log out?',
+        buttons: [
+            {
+                text: 'No',
+                role: 'cancel',
+                cssClass: 'secondary'
+            }, {
+                text: 'Yes',
+                handler: () => {
+                    this.logout();
                 }
-            ]
-        });
-        return alert.present();
-    }
+            }
+        ]
+    });
+    return alert.present();
+  }
 
 }

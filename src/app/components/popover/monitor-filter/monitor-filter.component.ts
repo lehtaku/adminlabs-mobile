@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { MonitorService } from '../../../services/monitor/monitor.service';
 import { MonitorFilter} from '../../../interfaces/monitor/monitor-filter';
@@ -20,15 +20,13 @@ export class MonitorFilterComponent implements OnInit {
   }
 
   periodChanged(event: any): void {
+    this.monitorFilter.periodSelection = event.target.value;
     this.setChanges();
   }
 
   stepsChanged(event: any): void {
+    this.monitorFilter.stepSelection = event.target.value;
     this.setChanges();
-  }
-
-  focusLose(event: any) {
-    console.log(event);
   }
 
   setChanges() {

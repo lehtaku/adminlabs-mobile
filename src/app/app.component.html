@@ -8,37 +8,24 @@
       </ion-header>
 
       <ion-content>
-        <ion-list lines="none">
-          <div *ngIf="loadingError">
-            <ion-item class="user-details">
-              <ion-label slot="start">
-                <h2>Loading error</h2>
-                <p>Try to refresh..</p>
-              </ion-label>
-              <ion-label slot="end">
-                <ion-buttons>
-                  <ion-button (click)="loadContent()">
-                    <ion-icon name="refresh" color="light"></ion-icon>
-                  </ion-button>
-                </ion-buttons>
-              </ion-label>
-            </ion-item>
-          </div>
 
-          <div *ngIf="!isLoggedIn && !loadingError" class="user-loading">
+        <ng-template #loading>
+          <div class="user-loading">
             <ion-item class="user-details">
               <ion-spinner color="light"></ion-spinner>
             </ion-item>
           </div>
+        </ng-template>
 
-          <div *ngIf="isLoggedIn && !loadingError">
+        <ion-list lines="none">
+          <div *ngIf="(user$ | async) as user; else loading">
             <ion-item class="user-details">
               <ion-avatar slot="start">
-                <ngx-avatar name="{{ userDetails.name }}" size="40"></ngx-avatar>
+                <ngx-avatar name="{{ user.name }}" size="40"></ngx-avatar>
               </ion-avatar>
               <ion-label>
-                <h2>{{ userDetails.name }}</h2>
-                <p>{{ userDetails.email }}</p>
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
               </ion-label>
             </ion-item>
           </div>

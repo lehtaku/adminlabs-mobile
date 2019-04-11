@@ -28,9 +28,9 @@ export class MonitorsPage implements OnInit {
   public groupPopover: any;
 
   // DOM
-  public isContentLoaded: boolean;
+  public canScroll: boolean;
+  public groupsEmpty: boolean;
   public loadingError: boolean;
-  public emptyRes: boolean;
   public stateSegment: string;
 
   constructor(
@@ -51,35 +51,38 @@ export class MonitorsPage implements OnInit {
   }
 
   loadContent() {
+    // Init variables
+    this.monitors = null;
+    this.canScroll = true;
+    this.groupsEmpty = false;
+    this.loadingError = false;
+
+    // Close group selection popup when loading content
     if (this.groupPopover !== null && this.groupPopover !== undefined) {
       this.groupPopover.dismiss();
     }
-    this.emptyRes = false;
-    this.isContentLoaded = false;
-    this.loadingError = false;
-    this.updateContent()
-        .then(() => {
-          if (!this.monitors.length) {
-            this.emptyRes = true;
-          }
-        }).catch(err => {
-          this.isContentLoaded = false;
-          this.loadingError = true;
-        }).finally(() => this.isContentLoaded = true);
+
+    // Get monitor groups
+    this.monitorsService.getMonitorGroups().subscribe(groups => this.monitorGroups = groups);
+
+    // Load monitors
+    this.monitorsService.getMonitors(this.groupId).subscribe(monitors => {
+      this.monitors = monitors;
+      this.checkGroupEmpty();
+      this.sortMonitorsByState();
+    }, err => this.loadingFailed());
   }
 
-  async updateContent() {
-      this.monitorGroups = await this.monitorsService.getMonitorGroups();
-      if (this.groupId === '') {
-        this.monitors = await this.monitorsService.getMonitors();
-      } else {
-        this.monitors = await this.monitorsService.getMonitorsByGroup(this.groupId);
-      }
-      await this.sortMonitorsByState();
+  checkGroupEmpty(): void {
+    if (this.monitors.length <= 0) {
+      this.groupsEmpty = true;
+      this.canScroll = false;
+    }
   }
 
-  navToMonitor(monitorId: string) {
-    this.router.navigate(['/user/monitors/' + monitorId]);
+  loadingFailed() {
+    this.loadingError = true;
+    this.canScroll = false;
   }
 
   async showGroups(event: any) {
@@ -94,27 +97,32 @@ export class MonitorsPage implements OnInit {
     return await this.groupPopover.present();
   }
 
-  async sortMonitorsByState() {
+  sortMonitorsByState() {
     this.upMonitors = [];
     this.downMonitors = [];
     this.pausedMonitors = [];
-    for await (const monitor of this.monitors) {
-      if (monitor.state === 'paused') {
-        this.pausedMonitors.push(monitor);
-      } else if (monitor.health === 'ok') {
-        this.upMonitors.push(monitor);
-      } else if (monitor.health === 'down') {
-        this.downMonitors.push(monitor);
+    for (const mon of this.monitors) {
+      if (mon.state === 'paused') {
+        this.pausedMonitors.push(mon);
+      } else if (mon.health === 'ok') {
+        this.upMonitors.push(mon);
+      } else if (mon.health === 'down') {
+        this.downMonitors.push(mon);
       }
     }
+  }
+
+  navToMonitor(monitorId: string) {
+    this.router.navigate(['/user/monitors/' + monitorId]);
   }
 
   segmentChanged(event: any) {
     this.stateSegment = event.detail.value;
   }
 
-  allMonitorsUp() {
-    return !(this.upMonitors.length && !this.downMonitors.length && !this.pausedMonitors.length);
+  showFooter() {
+    // If all monitors up and no loading errors
+    return !(this.upMonitors.length && !this.downMonitors.length && !this.pausedMonitors.length || this.loadingError || this.groupsEmpty);
   }
 
   checkMonitorState(monitor: MonitorDetails) {

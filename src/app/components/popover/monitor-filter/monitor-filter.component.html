@@ -1,5 +1,5 @@
 <ion-list no-margin>
-  <ion-radio-group [(ngModel)]="monitorFilter.periodSelection" (ngModelChange)="periodChanged($event)">
+  <ion-radio-group [ngModel]="monitorFilter.periodSelection" (ionChange)="periodChanged($event)">
     <ion-list-header>
       Filter by
     </ion-list-header>
@@ -23,8 +23,8 @@
     Hits
   </ion-list-header>
   <ion-item lines="none">
-    <ion-range min="21" max="500" debounce="750" pin="true" color="success" [(ngModel)]="monitorFilter.stepSelection"
-               (ngModelChange)="stepsChanged($event)">
+    <ion-range min="21" max="500" pin="true" color="success" [ngModel]="monitorFilter.stepSelection"
+               (ionBlur)="stepsChanged($event)">
       <ion-label slot="start">21</ion-label>
       <ion-label slot="end">500</ion-label>
     </ion-range>

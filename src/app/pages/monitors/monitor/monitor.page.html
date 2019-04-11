@@ -16,7 +16,8 @@
 </ion-header>
 
 <ion-content [scrollY]="canScroll">
-    <div *ngIf="loadingError && isContentLoaded" class="loading-error">
+
+    <div *ngIf="loadingError" class="loading-error">
         <div padding class="loading-error-content">
             <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
             <h2>No data available!</h2>
@@ -24,61 +25,61 @@
         </div>
     </div>
 
-    <div *ngIf="!isContentLoaded && !loadingError" class="loading-spinner">
+    <div *ngIf="!monitorDetails && !scanHistory" class="loading-spinner">
         <ion-spinner></ion-spinner>
     </div>
 
-    <div *ngIf="!loadingError">
-        <ion-list lines="full">
-            <div *ngIf="isContentLoaded">
-                <ion-item>
-                    <ion-avatar slot="start">
-                        <div>
-                            <span [className]="checkMonitorState()"></span>
-                        </div>
-                    </ion-avatar>
-                    <ion-label>
-                        <h2>{{ monitorDetails.name }} ({{ monitorDetails.type }})</h2>
-                        <h3>{{ monitorDetails.address }}</h3>
-                    </ion-label>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Active</ion-label>
-                    <ion-toggle color="success" [checked]="monitorState" (ionChange)="pauseMonitor($event)"></ion-toggle>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Last scan</ion-label>
-                    {{ showLastScan() }}
-                </ion-item>
-            </div>
+    <ion-list lines="full">
 
-            <div [hidden]="!isChartRendered || isHistoryEmpty">
-                <ion-item class="chart-item">
-                    <div id="monitorChart" class="monitor-chart" (touchstart)="chartClicked($event)" (touchend)="chartNonClicked($event)"></div>
-                </ion-item>
-            </div>
+        <div *ngIf="monitorDetails">
+            <ion-item>
+                <ion-avatar slot="start">
+                    <div>
+                        <span [className]="checkMonitorState()"></span>
+                    </div>
+                </ion-avatar>
+                <ion-label>
+                    <h2>{{ monitorDetails.name }} ({{ monitorDetails.type }})</h2>
+                    <h3>{{ monitorDetails.address }}</h3>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>Active</ion-label>
+                <ion-toggle color="success" [(ngModel)]="monitorState" (ngModelChange)="pauseMonitor()"></ion-toggle>
+            </ion-item>
+            <ion-item>
+                <ion-label>Last scan</ion-label>
+                {{ showLastScan() }}
+            </ion-item>
+        </div>
 
-            <div *ngIf="isContentLoaded && isHistoryEmpty" class="history-empty">
-                <div padding class="history-empty-content">
-                    <h2>Scan history is empty</h2>
-                    <p>This could be caused if the monitor is paused or just created.</p>
-                </div>
+        <div *ngIf="historyEmpty" class="history-empty">
+            <div padding class="history-empty-content">
+                <h2>Scan history is empty</h2>
+                <p>This could be caused if the monitor is paused or just created.</p>
             </div>
+        </div>
 
-            <div *ngIf="isContentLoaded && !isHistoryEmpty">
-                <ion-item>
-                    <ion-label>Highest</ion-label>
-                    {{ scanHistory.highest }} ms
-                </ion-item>
-                <ion-item>
-                    <ion-label>Lowest</ion-label>
-                    {{ scanHistory.lowest }} ms
-                </ion-item>
-                <ion-item>
-                    <ion-label>Average</ion-label>
-                    {{ scanHistory.average }} ms
-                </ion-item>
-            </div>
-        </ion-list>
-    </div>
+        <div [hidden]="!monitorDetails && !scanHistory">
+            <ion-item class="chart-item">
+                <div id="monitorChart" class="monitor-chart" (touchstart)="chartClicked($event)" (touchend)="chartNonClicked($event)"></div>
+            </ion-item>
+        </div>
+
+        <div *ngIf="scanHistory">
+            <ion-item>
+                <ion-label>Highest</ion-label>
+                {{ scanHistory.highest }} ms
+            </ion-item>
+            <ion-item>
+                <ion-label>Lowest</ion-label>
+                {{ scanHistory.lowest }} ms
+            </ion-item>
+            <ion-item>
+                <ion-label>Average</ion-label>
+                {{ scanHistory.average }} ms
+            </ion-item>
+        </div>
+
+    </ion-list>
 </ion-content>

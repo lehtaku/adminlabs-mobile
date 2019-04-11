@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '../../../services/user/user.service';
-import { AlertController } from '@ionic/angular';
+import { AlertService } from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -11,38 +11,31 @@ import { AlertController } from '@ionic/angular';
 export class ForgotPasswordPage implements OnInit {
 
   public email: string;
-  public formLoading: boolean;
+  public formSubmitted: boolean;
 
   constructor(private userService: UserService,
-              private alertCtrl: AlertController) { }
+              private alertService: AlertService) { }
 
   ngOnInit() {
+    this.formSubmitted = false;
   }
 
   resetPwd() {
-    this.formLoading = false;
+    this.formSubmitted = true;
     this.userService.resetPwd(this.email)
-        .then(() => this.successAlert())
-        .catch(() => this.failedAlert())
-        .finally(() => this.formLoading = false);
+        .subscribe(resetRes => {
+          if (resetRes.success === true) {
+            this.alertService.successToast('Password reset successfully!', 2000);
+          } else {
+            this.resetFailed();
+          }
+          this.formSubmitted = false;
+        }, err => this.resetFailed());
   }
 
-  async successAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Check your email to reset your password.',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  async failedAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Something went wrong',
-      message: 'Please try again.',
-      buttons: ['OK']
-    });
-    alert.present();
+  resetFailed() {
+    this.alertService.dangerToast('Something went wrong, try again!', 3000);
+    this.formSubmitted = false;
   }
 
 }

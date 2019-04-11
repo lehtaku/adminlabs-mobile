@@ -1,27 +1,24 @@
 <ion-content padding [scrollY]="false">
     <div class="login">
       <img src="../../../assets/img/adminlabs-logo-white.svg" class="login-logo" alt="Logo">
-      <form (ngSubmit)="login()" #loginForm="ngForm">
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
         <ion-list>
           <div class="form-group">
             <ion-item>
               <ion-icon name="mail" color="medium"></ion-icon>
-              <ion-input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Email"></ion-input>
+              <ion-input ngModel type="email" class="form-control" id="email" name="email" placeholder="Email"></ion-input>
             </ion-item>
           </div>
           <div class="form-group">
             <ion-item>
-              <ion-icon name="lock" color="medium" size="500"></ion-icon>
-              <ion-input type="password" class="form-control" id="pwd" [(ngModel)]="pwd" name="pwd" placeholder="Password"></ion-input>
+              <ion-icon name="lock" color="medium"></ion-icon>
+              <ion-input ngModel type="password" class="form-control" id="pwd" name="pwd" placeholder="Password"></ion-input>
             </ion-item>
           </div>
           <div class="form-group">
             <ion-button type="submit">
-              <div *ngIf="!loginLoading">
+              <div *ngIf="!formSubmitted; else loading">
                 <p>Log in</p>
-              </div>
-              <div *ngIf="loginLoading">
-                <ion-spinner></ion-spinner>
               </div>
             </ion-button>
           </div>
@@ -32,3 +29,9 @@
       </form>
     </div>
 </ion-content>
+
+<ng-template #loading>
+  <div>
+    <ion-spinner></ion-spinner>
+  </div>
+</ng-template>

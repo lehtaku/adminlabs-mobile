@@ -28,15 +28,15 @@ export class MonitorPage implements OnInit {
 
   // Chart
   public lineChart: any;
+  public chartData: Array<any>;
 
   // Alert
   public filterPopover: any;
+
   // DOM
-  public loadingError: boolean;
-  public isContentLoaded: boolean;
-  public isHistoryEmpty: boolean;
   public canScroll: boolean;
-  public isChartRendered: boolean;
+  public historyEmpty: boolean;
+  public loadingError: boolean;
   public scrollTimeout: any;
 
   constructor(private router: Router,
@@ -55,45 +55,53 @@ export class MonitorPage implements OnInit {
   }
 
   loadContent() {
+    // Init variables
+    this.monitorDetails = null;
+    this.scanHistory = null;
+    this.canScroll = true;
+    this.loadingError = false;
+    this.historyEmpty = false;
+
+    // Close filter selection popup when loading content
     if (this.filterPopover !== null && this.filterPopover !== undefined) {
       this.filterPopover.dismiss();
     }
-    this.isContentLoaded = false;
-    this.isChartRendered = false;
-    this.loadingError = false;
-    this.updateContent()
-        .catch(err => {
-          this.loadingError = true;
-          this.isContentLoaded = false;
-        }).finally(() => {
-          this.isContentLoaded = true;
-          setTimeout(() => this.isChartRendered = true, 50);
-    });
-  }
 
-  async updateContent() {
-      this.monitorDetails = await this.monitorService.getMonitor(this.monitorId);
+    this.monitorService.getMonitor(this.monitorId).subscribe(monitorDet => {
+      this.monitorDetails = monitorDet;
       this.monitorState = this.monitorDetails.state === 'enabled'; // Set to true if enabled
-      this.scanHistory = await this.monitorService.getMonitorScanHistory(this.monitorId,
-          this.monitorFilter.periodSelection, this.monitorFilter.stepSelection);
-      if (!Object.entries(this.scanHistory).length) {
-        this.isHistoryEmpty = true;
-      } else {
-        this.createChart()
-            .then(() => this.isHistoryEmpty = false);
-      }
+    }, err => this.loadingFailed());
+    this.monitorService.getMonitorScanHistory(this.monitorId, this.monitorFilter.periodSelection, this.monitorFilter.stepSelection)
+        .subscribe(history => {
+          this.scanHistory = history;
+          this.checkHistoryEmpty();
+          this.createChartData();
+          this.createChart();
+        }, err => this.loadingFailed());
   }
 
-  async createChart() {
-    // Initialize data
-    const chartData: Array<any> = [];
-    for await (const scanItem of Object.entries(this.scanHistory.loadTimes)) {
-      chartData.push({
+  loadingFailed() {
+    this.loadingError = true;
+    this.canScroll = false;
+  }
+
+  checkHistoryEmpty() {
+    if (Object.entries(this.scanHistory).length <= 0) {
+      this.historyEmpty = true;
+    }
+  }
+
+  createChartData() {
+    this.chartData = [];
+    for (const scanItem of Object.entries(this.scanHistory.loadTimes)) {
+      this.chartData.push({
         x: new Date(Number(scanItem[0]) * 1000),
         y: scanItem[1]
       });
     }
-    // Create chart
+  }
+
+  createChart() {
     this.lineChart = HighCharts.chart({
       rangeSelector: {
         selected: 1
@@ -126,7 +134,7 @@ export class MonitorPage implements OnInit {
       series: [{
         name: 'Load time (ms)',
         turboThreshold: 0,
-        data: chartData,
+        data: this.chartData,
         type: undefined,
       }],
     });
@@ -155,12 +163,10 @@ export class MonitorPage implements OnInit {
     this.canScroll = true;
   }
 
-  async pauseMonitor(event: any) {
-    try {
-       await this.monitorService.pauseMonitor(this.monitorId, event.detail.checked);
-    } catch (err) {
-      this.monitorPauseFailed(this.monitorState);
-    }
+  pauseMonitor() {
+    this.monitorService.pauseMonitor(this.monitorId, this.monitorState)
+        .subscribe(() => this.monitorPauseSuccess(),
+            err => this.monitorPauseFailed());
   }
 
   showLastScan() {
@@ -186,14 +192,19 @@ export class MonitorPage implements OnInit {
     return await this.filterPopover.present();
   }
 
-  async monitorPauseFailed(monitorState: boolean) {
-    let errorMess: string;
-    if (!monitorState) {
-      errorMess = 'pausing';
+  async monitorPauseSuccess() {
+    let stateMsg: string;
+    if (!this.monitorState) {
+      stateMsg = 'paused';
     } else {
-      errorMess = 'resuming';
+      stateMsg = 'enabled';
     }
-    this.alertService.presentToast(`An error occurred at ${errorMess} monitor, try again!`, 2500);
+    this.alertService.successToast(`Monitor ${stateMsg} successfully!`, 2000);
   }
+
+  async monitorPauseFailed() {
+    this.alertService.dangerToast('Something went wrong, please refresh and try again!', 3000);
+  }
+
 }
 

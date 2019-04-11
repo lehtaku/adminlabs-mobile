@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavParams } from '@ionic/angular';
+
 import { MonitorService } from '../../../services/monitor/monitor.service';
 import { MonitorGroups } from '../../../interfaces/monitor/monitor-groups';
-import {NavParams} from '@ionic/angular';
 
 @Component({
   selector: 'app-monitor-groups',
@@ -24,7 +25,7 @@ export class MonitorGroupsComponent implements OnInit {
   }
 
   groupChanged(event: any) {
-    this.monitorService.groupSelection.next(event);
+    this.monitorService.groupSelection.next(event.target.value);
   }
 
 }

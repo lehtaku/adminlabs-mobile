@@ -17,28 +17,32 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <div *ngIf="isContentLoaded && loadingError" class="loading-error">
-      <div padding class="loading-error-content">
-        <img src="../../assets/img/adminlabs-data-not-found-001.svg" alt="Data not found">
-        <h2>No data available!</h2>
-        <p>Lean back and relax. We're cooking up some data at the moment and will get back to you shortly.</p>
-      </div>
-    </div>
+<ion-content [scrollY]="canScroll">
 
-    <div *ngIf="isContentLoaded && !loadingError && emptyRes" class="loading-error">
-      <div padding class="loading-error-content">
-        <img src="../../assets/img/adminlabs-data-not-found-003.svg" alt="Data not found">
-        <h2>This group is empty!</h2>
-        <p>Try to select some other group or add monitors to this group.</p>
-      </div>
+  <div *ngIf="groupsEmpty" class="loading-error">
+    <div padding class="loading-error-content">
+      <img src="./assets/img/adminlabs-data-not-found-003.svg" alt="Data not found">
+      <h2>Unable to find any monitors.</h2>
+      <p>Try to select some other monitor group or add monitors if you don't have any.</p>
     </div>
+  </div>
 
-    <div *ngIf="!isContentLoaded && !loadingError" class="loading-spinner">
+  <div *ngIf="loadingError" class="loading-error">
+    <div padding class="loading-error-content">
+      <img src="./assets/img/adminlabs-data-not-found-001.svg" alt="Loading error">
+      <h2>No data available.</h2>
+      <p>Check your network connection, otherwise lean back and relax. We're cooking up some data at the moment and will get back to you shortly.</p>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-spinner">
       <ion-spinner></ion-spinner>
     </div>
+  </ng-template>
 
-    <div *ngIf="isContentLoaded && !loadingError && !emptyRes" [ngSwitch]="stateSegment">
+  <div *ngIf="monitors; else loading">
+    <div [ngSwitch]="stateSegment">
       <ion-list lines="full">
 
         <div *ngSwitchCase="'all'">
@@ -107,10 +111,12 @@
 
       </ion-list>
     </div>
+  </div>
+
 </ion-content>
 
-<ion-footer *ngIf="isContentLoaded && !loadingError && !emptyRes">
-  <ion-toolbar *ngIf="allMonitorsUp()" no-padding>
+<ion-footer>
+  <ion-toolbar *ngIf="monitors && showFooter()" no-padding>
       <ion-segment (ionChange)="segmentChanged($event)" [value]="stateSegment">
         <ion-segment-button value="all">
           <ion-label>All</ion-label>
