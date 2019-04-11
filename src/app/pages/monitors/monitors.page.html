@@ -116,18 +116,22 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar *ngIf="monitors && showFooter()" no-padding>
+  <ion-toolbar *ngIf="monitors && showFooter()">
       <ion-segment (ionChange)="segmentChanged($event)" [value]="stateSegment">
         <ion-segment-button value="all">
+          <ion-icon name="infinite"></ion-icon>
           <ion-label>All</ion-label>
         </ion-segment-button>
-        <ion-segment-button *ngIf="downMonitors.length || pausedMonitors.length" value="up">
+        <ion-segment-button *ngIf="upMonitors.length" value="up">
+          <ion-icon name="arrow-up"></ion-icon>
           <ion-label>Up</ion-label>
         </ion-segment-button>
         <ion-segment-button *ngIf="downMonitors.length" value="down">
+          <ion-icon name="arrow-down"></ion-icon>
           <ion-label>Down</ion-label>
         </ion-segment-button>
         <ion-segment-button *ngIf="pausedMonitors.length" value="paused">
+          <ion-icon name="pause"></ion-icon>
           <ion-label>Paused</ion-label>
         </ion-segment-button>
       </ion-segment>

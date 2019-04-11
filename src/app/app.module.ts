@@ -21,7 +21,9 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      mode: 'ios'
+    }),
     IonicStorageModule.forRoot(),
     AvatarModule,
     AppRoutingModule,

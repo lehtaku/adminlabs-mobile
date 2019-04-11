@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { UserService } from '../../../services/user/user.service';
 import { AlertService } from '../../../services/alert/alert.service';
@@ -10,7 +11,6 @@ import { AlertService } from '../../../services/alert/alert.service';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  public email: string;
   public formSubmitted: boolean;
 
   constructor(private userService: UserService,
@@ -20,9 +20,9 @@ export class ForgotPasswordPage implements OnInit {
     this.formSubmitted = false;
   }
 
-  resetPwd() {
+  resetPwd(form: NgForm) {
     this.formSubmitted = true;
-    this.userService.resetPwd(this.email)
+    this.userService.resetPwd(form.value.email)
         .subscribe(resetRes => {
           if (resetRes.success === true) {
             this.alertService.successToast('Password reset successfully!', 2000);

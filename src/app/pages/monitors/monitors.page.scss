@@ -12,26 +12,39 @@ ion-item {
   --detail-icon-color: var(--ion-color-dark);
 }
 
+ion-footer {
+  width: 100%;
+  ion-toolbar {
+    border-top: 1px solid var(--ion-color-toolbar);
+    --background: var(--ion-color-content-creme) !important;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+  }
+}
+
 ion-spinner {
   display: block;
   margin: auto;
 }
 
-ion-footer {
-  ion-toolbar {
-    --background: var(--ion-color-content-dark);
-  }
+ion-segment-button {
+  min-width: calc(100% / 4);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --color: var(--ion-color-dark);
+  --color-checked: var(--ion-color-light);
+  --border-style: none;
+  --border-radius: 0;
+  --background: var(--ion-color-content-creme);
+  --background-checked: var(--ion-color-toolbar);
+  --padding-top: 4px;
+  --padding-bottom: 4px;
 }
 
-ion-segment-button {
-  --background: transparent;
-  --background-activated: var(--ion-color-toolbar);
-  --background-checked: var(--ion-color-toolbar);
-  --border-radius: 0;
-  --border-style: none;
-  --color: var(--ion-color-light);
-  padding: 5px;
-}
 
 
 

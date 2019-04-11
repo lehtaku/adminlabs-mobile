@@ -59,13 +59,9 @@ export class AppComponent {
   }
 
   async initializeApp() {
-    await this.storageService.getUserFromStorage().subscribe((user) => {
-          if (user == null) {
-            this.authService.authState.next(false);
-          } else {
-            this.authService.authState.next(true);
-          }
-        });
+    await this.storageService.checkUserStored()
+        .then(() => this.authService.authState.next(true))
+        .catch(() => this.authService.authState.next(false));
 
     await this.authService.authState.subscribe((isLogged) => {
       if (isLogged) {
@@ -77,6 +73,8 @@ export class AppComponent {
             .then(() => this.menuCtrl.enable(false));
       }
     });
+
+
   }
 
   setActive(pageId: string) {

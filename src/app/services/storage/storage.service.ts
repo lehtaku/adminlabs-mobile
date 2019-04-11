@@ -16,6 +16,20 @@ export class StorageService {
       return fromPromise(this.storage.get('al_user'));
   }
 
+  checkUserStored(): Promise<any> {
+      return new Promise((resolve, reject) => {
+          this.storage.get('al_user')
+              .then(user => {
+                  if (user == null || Object.entries(user).length <= 0) {
+                      reject();
+                  } else {
+                      resolve();
+                  }
+              })
+              .catch(() => reject());
+      });
+  }
+
   saveUserToStorage(email: string, pwd: string) {
       return fromPromise(this.storage.set('al_user', EncryptionService.encryptUserData(email, pwd)));
   }
