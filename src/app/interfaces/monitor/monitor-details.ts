@@ -5,11 +5,29 @@ export interface MonitorDetails {
   interval: string;
   retryInterval: number;
   scannerLocationId: string;
-  outageId: string;
-  maintenanceId: string;
+  outage: Outage;
+  maintenance: Maintenance;
   lastScan: number;
   type: string;
   health: string;
   state: string;
   address: string;
 }
+
+interface Outage {
+  id: string;
+  started: number;
+  ended?: number;
+  comments?: string;
+}
+
+interface Maintenance {
+  id: string;
+  start: number;
+  end: number;
+  title: string;
+  description: string;
+  ignoreOutages: boolean;
+  comments: any;
+}
+

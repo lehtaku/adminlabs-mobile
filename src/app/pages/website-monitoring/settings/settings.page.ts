@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService } from '../../services/user/user.service';
-import { AlertService } from '../../services/alert/alert.service';
-import { User } from '../../interfaces/user/user';
+import { UserService } from '../../../services/user/user.service';
+import { AlertService } from '../../../services/alert/alert.service';
+import { User } from '../../../interfaces/user/user';
 
 @Component({
   selector: 'app-settings',

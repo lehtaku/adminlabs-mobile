@@ -4,13 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as HighCharts from 'highcharts';
 import * as Moment from 'moment';
 
-import { MonitorService } from '../../../services/monitor/monitor.service';
-import { AlertService } from '../../../services/alert/alert.service';
+import { MonitorService } from '../../../../services/monitor/monitor.service';
+import { AlertService } from '../../../../services/alert/alert.service';
 import { PopoverController } from '@ionic/angular';
-import { MonitorFilterComponent } from '../../../components/popover/monitor-filter/monitor-filter.component';
-import { ScanHistory } from '../../../interfaces/monitor/scan-history';
-import { MonitorDetails} from '../../../interfaces/monitor/monitor-details';
-import { MonitorFilter } from '../../../interfaces/monitor/monitor-filter';
+import { MonitorFilterComponent } from '../../../../components/popover/monitor-filter/monitor-filter.component';
+import { ScanHistory } from '../../../../interfaces/monitor/scan-history';
+import { MonitorDetails} from '../../../../interfaces/monitor/monitor-details';
+import { MonitorFilter } from '../../../../interfaces/monitor/monitor-filter';
+import {duration} from 'moment';
 
 @Component({
   selector: 'app-monitor',
@@ -75,8 +76,10 @@ export class MonitorPage implements OnInit {
         .subscribe(history => {
           this.scanHistory = history;
           this.checkHistoryEmpty();
-          this.createChartData();
-          this.createChart();
+          if (!this.historyEmpty) {
+            this.createChartData();
+            this.createChart();
+          }
         }, err => this.loadingFailed());
   }
 
@@ -154,8 +157,24 @@ export class MonitorPage implements OnInit {
     }
   }
 
+  unixToDate(unixTime: number) {
+    return Moment.unix(unixTime).format('lll');
+  }
+
+  unixToRelative() {
+    return Moment.unix(this.monitorDetails.lastScan).calendar();
+  }
+
+  outageEnding(unixTime: number) {
+    if (unixTime == null) {
+      return 'Not ended';
+    } else {
+      return this.unixToDate(unixTime);
+    }
+  }
+
   chartClicked(event: any) {
-    this.scrollTimeout = setTimeout(() => this.canScroll = false, 1000);
+    this.scrollTimeout = setTimeout(() => this.canScroll = false, 500);
   }
 
   chartNonClicked(event: any) {
@@ -167,10 +186,6 @@ export class MonitorPage implements OnInit {
     this.monitorService.pauseMonitor(this.monitorId, this.monitorState)
         .subscribe(() => this.monitorPauseSuccess(),
             err => this.monitorPauseFailed());
-  }
-
-  showLastScan() {
-    return Moment.unix(this.monitorDetails.lastScan).calendar();
   }
 
   getPeriodName() {

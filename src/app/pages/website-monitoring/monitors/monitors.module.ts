@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 import { MonitorsPage } from './monitors.page';
-import { MonitorGroupsComponent } from '../../components/popover/monitor-groups/monitor-groups.component';
+import { MonitorGroupsComponent } from '../../../components/popover/monitor-groups/monitor-groups.component';
 
 const routes: Routes = [
   {

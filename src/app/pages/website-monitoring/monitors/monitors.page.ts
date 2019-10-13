@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 
 import { MenuController, PopoverController } from '@ionic/angular';
 
-import { MonitorService } from '../../services/monitor/monitor.service';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { MonitorGroupsComponent } from '../../components/popover/monitor-groups/monitor-groups.component';
-import { MonitorDetails } from '../../interfaces/monitor/monitor-details';
-import { MonitorGroups } from '../../interfaces/monitor/monitor-groups';
+import { MonitorService } from '../../../services/monitor/monitor.service';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { MonitorGroupsComponent } from '../../../components/popover/monitor-groups/monitor-groups.component';
+import { MonitorDetails } from '../../../interfaces/monitor/monitor-details';
+import { MonitorGroups } from '../../../interfaces/monitor/monitor-groups';
 
 @Component({
   selector: 'app-monitors',
@@ -43,7 +43,6 @@ export class MonitorsPage implements OnInit {
 
   ngOnInit() {
     this.menuCtrl.enable(true);
-    this.stateSegment = 'all';
     this.monitorsService.groupSelection.subscribe(groupId => {
       this.groupId = groupId;
       this.loadContent();
@@ -56,6 +55,7 @@ export class MonitorsPage implements OnInit {
     this.canScroll = true;
     this.groupsEmpty = false;
     this.loadingError = false;
+    this.stateSegment = 'all';
 
     // Close group selection popup when loading content
     if (this.groupPopover !== null && this.groupPopover !== undefined) {

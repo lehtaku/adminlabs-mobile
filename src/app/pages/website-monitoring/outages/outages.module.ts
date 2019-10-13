@@ -5,24 +5,22 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MonitorPage } from './monitor.page';
-import { MonitorFilterComponent } from '../../../components/popover/monitor-filter/monitor-filter.component';
+import { OutagesPage } from './outages.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MonitorPage
+    component: OutagesPage
   }
 ];
 
 @NgModule({
-  entryComponents: [MonitorFilterComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MonitorPage, MonitorFilterComponent]
+  declarations: [OutagesPage]
 })
-export class MonitorPageModule {}
+export class OutagesPageModule {}

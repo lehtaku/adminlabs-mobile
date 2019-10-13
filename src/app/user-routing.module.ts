@@ -9,11 +9,15 @@ const routes: Routes = [
   },
   {
     path: 'monitors',
-    loadChildren: './pages/monitors/monitors.module#MonitorsPageModule'
+    loadChildren: './pages/website-monitoring/monitors/monitors.module#MonitorsPageModule'
+  },
+  {
+    path: 'maintenances',
+    loadChildren: './pages/website-monitoring/maintenances/maintenances.module#MaintenancesPageModule'
   },
   {
     path: 'settings',
-    loadChildren: './pages/settings/settings.module#SettingsPageModule'
+    loadChildren: './pages/website-monitoring/settings/settings.module#SettingsPageModule'
   }
 ];
 

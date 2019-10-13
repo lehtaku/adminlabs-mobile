@@ -1,8 +1,8 @@
 ion-list {
   --background: var(--ion-color-content-light);
   width: 100%;
-  border: 1px solid var(--ion-color-border);
   padding: 0;
+  margin: 0;
 }
 
 ion-item {
@@ -12,12 +12,34 @@ ion-item {
   --detail-icon-color: var(--ion-color-dark);
 }
 
+ion-list.maintained-monitors {
+  margin-top: 10px;
+}
+
+ion-icon {
+  padding-right: 10px;
+}
+
+ion-item-divider {
+  --padding-top: 2.5px;
+  --padding-bottom: 2.5px;
+}
+
 .chart-item {
   --background: var(--ion-color-white);
   --padding-start: 0px;
   --padding-end: 0px;
   --padding-top: 5px;
   --padding-bottom: 5px;
+  transition: 0.1s;
+}
+
+.chart-pressed {
+  transition: 0.25s;
+  z-index: 999;
+  -webkit-box-shadow: 0 0 0 40rem rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 0 0 40rem rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 40rem rgba(0,0,0,0.4);
 }
 
 .chart-description {
@@ -46,5 +68,9 @@ ion-item {
 .history-empty-content {
   width: 75%;
   margin: auto;
+}
+
+h2 {
+  font-weight: 400;
 }
 

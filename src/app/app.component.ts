@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
 import { MenuController, Platform} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -9,8 +11,7 @@ import { AuthenticationService } from './services/authentication/authentication.
 import { UserService } from './services/user/user.service';
 import { StorageService } from './services/storage/storage.service';
 import { User } from './interfaces/user/user';
-import { NavigationService} from './services/navigation/navigation.service';
-import {Observable} from 'rxjs';
+import { NavigationService } from './services/navigation/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -26,15 +27,73 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Website monitoring',
-      id: 'monitors',
-      url: '/user/monitors',
+      id: 'website-monitoring',
       icon: 'pulse',
+      open: true,
+      children: [
+        {
+          title: 'Monitors',
+          id: 'wm-monitors',
+          url: '/user/monitors',
+          icon: 'pulse',
+        },
+        {
+          title: 'History',
+          id: 'wm-history',
+          url: '',
+          icon: 'pulse',
+        },
+        {
+          title: 'Outages',
+          id: 'wm-outages',
+          url: '',
+          icon: 'pulse',
+        },
+        {
+          title: 'Maintenances',
+          id: 'wm-maintenances',
+          url: '/user/maintenances',
+          icon: 'pulse',
+        },
+        {
+          title: 'Settings',
+          id: 'wm-settings',
+          url: '/user/settings',
+          icon: 'settings',
+        },
+      ]
     },
     {
       title: 'Settings',
       id: 'settings',
-      url: '/user/settings',
-      icon: 'settings'
+      icon: 'settings',
+      children: [
+        {
+          title: 'Account settings',
+          id: 'settings-account',
+          url: '',
+        },
+        {
+          title: 'Personal settings',
+          id: 'settings-personal',
+          url: '',
+        },
+        {
+          title: 'Users',
+          id: 'settings-users',
+          url: '',
+        },
+        {
+          title: 'API',
+          id: 'settings-api',
+          url: '',
+        },
+        {
+          title: 'Billing',
+          id: 'settings-billing',
+          url: '',
+        },
+      ]
     }
   ];
 
@@ -73,8 +132,6 @@ export class AppComponent {
             .then(() => this.menuCtrl.enable(false));
       }
     });
-
-
   }
 
   setActive(pageId: string) {

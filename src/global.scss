@@ -32,6 +32,11 @@ ion-content {
   --background: var(--ion-color-content-creme);
 }
 
+ion-item {
+  --padding-top: 2.5px;
+  --padding-bottom: 2.5px;
+}
+
 .loading-error {
   background-color: var(--ion-color-content-dark);
   color: var(--ion-color-light);

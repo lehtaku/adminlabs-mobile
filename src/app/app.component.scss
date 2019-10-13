@@ -1,3 +1,7 @@
+ion-menu {
+  --background: var(--ion-color-content-dark);
+}
+
 ion-title {
   position: absolute;
   left: 0;
@@ -45,4 +49,14 @@ ion-item {
   --background-activated: var(--ion-color-toolbar);
   --color: var(--ion-color-light);
   --detail-icon-color: var(--ion-color-light);
+}
+
+ion-item.sub-menu {
+  --padding-start: 57.5px;
+  --color: var(--ion-color-medium);
+}
+
+ion-footer {
+    --background: var(--ion-color-content-dark);
+  margin: 0;
 }

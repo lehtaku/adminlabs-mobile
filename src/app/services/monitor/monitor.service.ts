@@ -10,6 +10,7 @@ import { MonitorGroups } from '../../interfaces/monitor/monitor-groups';
 import { MonitorHistory } from '../../interfaces/monitor/monitor-history';
 import { MonitorFilter } from '../../interfaces/monitor/monitor-filter';
 import { Pause } from '../../interfaces/monitor/pause';
+import { Maintenances } from '../../interfaces/monitor/maintenances';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,10 @@ export class MonitorService {
 
   getMonitorHistory(monitorId: string, year: string, month: string): Observable<MonitorHistory> {
     return this.http.get<MonitorHistory>(`${ environment.apiBaseUrl }/monitors/${ monitorId }/history/${ year }/${ month }`);
+  }
+
+  getMaintenances(): Observable<Maintenances> {
+    return this.http.get<Maintenances>(environment.apiBaseUrl + '/maintenances');
   }
 
   pauseMonitor(monitorId: string, newState: any): Observable<Pause> {

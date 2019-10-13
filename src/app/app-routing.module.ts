@@ -17,7 +17,10 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     loadChildren: './user-routing.module#UserRoutingModule'
   },
-  { path: 'forgot-password', loadChildren: './pages/login/forgot-password/forgot-password.module#ForgotPasswordPageModule' }
+  { path: 'forgot-password', loadChildren: './pages/login/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
+  { path: 'maintenances', loadChildren: './pages/website-monitoring/maintenances/maintenances.module#MaintenancesPageModule' },
+  { path: 'history', loadChildren: './pages/website-monitoring/history/history.module#HistoryPageModule' },
+  { path: 'outages', loadChildren: './pages/website-monitoring/outages/outages.module#OutagesPageModule' }
 ];
 
 @NgModule({

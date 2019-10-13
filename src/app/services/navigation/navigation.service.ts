@@ -6,7 +6,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class NavigationService {
 
-  public activePage: BehaviorSubject<string> = new BehaviorSubject('monitors');
+  public activePage: BehaviorSubject<string> = new BehaviorSubject('wm-monitors');
 
   constructor() {}
 }
