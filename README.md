@@ -4,9 +4,9 @@
 
 # AdminLabs Mobile - Status Page & Website Monitoring
 
-Mobile application for [AdminLabs](https://www.adminlabs.com/) services. 
+Mobile application for [AdminLabs](https://www.adminlabs.com/) services. App interacts with this [API](https://api.adminlabs.com/docs/#account).
 
-Built with :heart: &  
+Built with  
 * [Ionic 4](https://ionicframework.com/)
 * [Angular 7](https://angular.io/)
 
@@ -20,28 +20,29 @@ Built with :heart: &
 Core features of the application
 
 
-## :closed_lock_with_key: Authentication
+### :closed_lock_with_key: Authentication
 
 **Login**
- * Save credentials to device storage
- * Use credentials in requests  
+ * Save credentials to device local storage, use (SHA-256) hashing
+ * Use credentials in all HTTP requests  
   
 **Logout**
- * Remove user credentials from storage
+ * Remove user credentials from local storage
 
 
-## :chart_with_downwards_trend: Website monitoring
+### :chart_with_downwards_trend: Website monitoring
 
 **Monitors page (List monitors)**
- * Name
+ * Monitor name
  * Health (Up/Warning/Down)
  * State (Enabled/Paused)
  * Monitoring URL
  * Link to monitor details page
- * Sort monitors by monitor groups  
+ * Sort monitors by monitor groups
+ * Sort monitors by health or state
 
 **Monitor page (Monitor details)**
- * Name
+ * Monitor name
  * Health
  * Scan interval
  * Last scan
@@ -50,27 +51,8 @@ Core features of the application
  * Loadtimes (Average/Max/Min)
   
   
-## :wrench: Settings
+### :wrench: Settings
 
 **Notifications**
- * Up/Down notifications
- * Down reminders
- 
-
-## :pencil2: To-Do
-
-**Check**
-  * Back-button blink, [Link to issue](https://github.com/ionic-team/ionic/issues/17022)
-  
-**Important**
-  * After login from another user, make previous view empty
-
-**Maybe**
-  * All/Up/Down/Paused bar to monitors listing
-  * Show remaining funds in sidebar under user
-
-## :bowtie: Future features
-
-  * Push notifications
-  * Continious monitoring (even when app shut-off)
-  * More settings (LED, vibrate, test notification)
+ * Toggle Up/Down notifications to account
+ * Toggle down reminders
