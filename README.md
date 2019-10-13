@@ -20,8 +20,6 @@ Built with
 
 ## :closed_lock_with_key: Authentication 
 
-***
-
 **Login**
  * Save login credentials to device local storage, (AES Encrypted)
  * Use credentials in all HTTP requests of application
@@ -34,8 +32,6 @@ Built with
 
 
 ## :chart_with_downwards_trend: Website monitoring
-
-***
 
 **Monitors page (List monitors)**
  * Monitor name
@@ -57,8 +53,6 @@ Built with
   
   
 ## :wrench: Settings
-
-***
 
 **Notifications**
  * Toggle up/down notifications
