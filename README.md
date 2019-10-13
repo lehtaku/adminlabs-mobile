@@ -20,14 +20,17 @@ Built with
 Core features of the application
 
 
-### :closed_lock_with_key: Authentication
+### :closed_lock_with_key: Authentication 
 
 **Login**
- * Save credentials to device local storage, use (SHA-256) hashing
- * Use credentials in all HTTP requests  
+ * Save login credentials to device local storage, (AES Encrypted)
+ * Use credentials in all HTTP requests of application
   
 **Logout**
  * Remove user credentials from local storage
+ 
+**Forgot password**
+ * Request new password with login email address
 
 
 ### :chart_with_downwards_trend: Website monitoring
@@ -54,5 +57,5 @@ Core features of the application
 ### :wrench: Settings
 
 **Notifications**
- * Toggle Up/Down notifications to account
+ * Toggle up/down notifications
  * Toggle down reminders
