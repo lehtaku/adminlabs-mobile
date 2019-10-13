@@ -1,4 +1,4 @@
-<img src="http://www.adminlabs.com/media/adminlabs-logo.png" width="80%" align="center">
+<img src="http://www.adminlabs.com/media/adminlabs-logo.png" width="60%" align="center">
 
 ***
 
@@ -17,10 +17,10 @@ Built with
 * [ngx-avatar](https://www.npmjs.com/package/ngx-avatar)
 
 # Main features
-Core features of the application
 
+## :closed_lock_with_key: Authentication 
 
-### :closed_lock_with_key: Authentication 
+***
 
 **Login**
  * Save login credentials to device local storage, (AES Encrypted)
@@ -33,7 +33,9 @@ Core features of the application
  * Request new password with login email address
 
 
-### :chart_with_downwards_trend: Website monitoring
+## :chart_with_downwards_trend: Website monitoring
+
+***
 
 **Monitors page (List monitors)**
  * Monitor name
@@ -54,7 +56,9 @@ Core features of the application
  * Loadtimes (Average/Max/Min)
   
   
-### :wrench: Settings
+## :wrench: Settings
+
+***
 
 **Notifications**
  * Toggle up/down notifications
