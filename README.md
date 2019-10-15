@@ -57,3 +57,7 @@ Built with
 **Notifications**
  * Toggle up/down notifications
  * Toggle down reminders
+ 
+ 
+## Screenshots
+<img src="./screenshots/img-1.png" width="30%">
