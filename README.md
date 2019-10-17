@@ -2,7 +2,7 @@
 
 ***
 
-# AdminLabs Mobile - Status Page & Website Monitoring
+# AdminLabs Mobile - Website Monitoring
 
 Mobile application for [AdminLabs](https://www.adminlabs.com/) services. App interacts with this [API](https://api.adminlabs.com/docs/#account).
 
@@ -61,3 +61,9 @@ Built with
  
 ## Screenshots
 <img src="./screenshots/img-1.png" width="30%">
+<img src="./screenshots/img-2.png" width="30%">
+<img src="./screenshots/img-3.png" width="30%">
+<img src="./screenshots/img-4.png" width="30%">
+<img src="./screenshots/img-5.png" width="30%">
+<img src="./screenshots/img-6.png" width="30%">
+<img src="./screenshots/img-7.png" width="30%">
